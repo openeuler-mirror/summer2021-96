@@ -1,0 +1,14 @@
+debug: true
+
+server:
+ dbs:
+  - db1
+  - db2
+  - db3
+
+ master:
+  host: 127.0.0.1
+  port: 8001
+ slave:
+  host: 127.0.0.1
+  port: 8001

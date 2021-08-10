@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>observer-main</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/statics/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="/statics/css/sidebars.css" rel="stylesheet">
+    <link href="/statics/css/main.css" rel="stylesheet">
+</head>
+<body>
+
+
+
+<main>
+
+    {{ template "sidebars" }}
+
+
+    <div class="content-div m-5">
+        {{/*   导航条    */}}
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Configuration</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Crontab</li>
+            </ol>
+        </nav>
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active"  data-bs-toggle="tab" href="#observer-crontab">可视化配置</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#advanced-crontab">高级配置</a>
+            </li>
+        </ul>
+    </div>
+
+</main>
+
+</body>
+</html>

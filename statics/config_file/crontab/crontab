@@ -1,0 +1,9 @@
+SHELL=/bin/sh
+PATH=/usr/bin:/usr/sbin:/sbin:/bin:/usr/lib/news/bin
+MAILTO=root  //如果出现错误，或者有数据输出，数据作为邮件发给这个账号
+HOME=/
+#  run-parts
+01****   root run-parts /etc/cron.hourly     //每个小时执行一次/etc/cron.hourly里的脚本
+024***   root run-parts /etc/cron.daily    //每天执行一次/etc/cron.daily里的脚本
+224**0  root run-parts /etc/cron.weekly     //每周执行一次/etc/cron.weekly里的脚本
+4241**  root run-parts /etc/cron.monthly     //每月执行一次/etc/cron.monthly里的脚本

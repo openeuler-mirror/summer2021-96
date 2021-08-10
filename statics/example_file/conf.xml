@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config version="1.0">
+    <debug>true</debug>
+    <server>
+        <host>127.0.0.1</host>
+        <port>8001</port>
+        <dbs>1, 2, 3</dbs>
+    </server>
+</config>
