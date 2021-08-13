@@ -8,7 +8,7 @@ import (
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
 
-	// 通过不同的 mode 加载 templates
+	/*通过不同的 mode 加载 templates*/
 	if mode := gin.Mode(); mode == gin.TestMode{
 		router.LoadHTMLGlob("./../templates/*")
 	}else {
@@ -16,12 +16,12 @@ func SetupRouter() *gin.Engine {
 		//router.LoadHTMLGlob("templates/**/*")
 	}
 
-	// 静态资源
+	/*静态资源路由*/
 	router.Static("/statics","./statics")
 	// favicon.ico
 	router.StaticFile("/favicon.ico","./favicon.ico")
 
-	// 路由分组
+	/*路由分组*/
 	index := router.Group("/")
 	{
 		index.GET("",handler.Main)
@@ -33,11 +33,14 @@ func SetupRouter() *gin.Engine {
 			configGroup.GET("/redis",handler.ConfigRedis)
 			configGroup.GET("/crontab",handler.ConfigCrontab)
 		}
-
+	}
+	apiGroup := router.Group("/api")
+	{
+		apiGroup.GET("/configuration_file",handler.ConfigurationFileRead)
+		apiGroup.POST("/configuration_file",handler.ConfigurationFileWrite)
+		apiGroup.GET("/configuration_file/observer",handler.ConfigurationReadByObserver)
 	}
 
-
-	// main
 
 	return router
 }

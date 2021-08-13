@@ -47,14 +47,14 @@
 
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active"  data-bs-toggle="tab" href="#observer-redis">可视化配置</a>
+                <a class="nav-link active"  data-bs-toggle="tab" href="#observer">可视化配置</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#advanced-redis">高级配置</a>
+                <a class="nav-link" data-bs-toggle="tab" href="#advanced">高级配置</a>
             </li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane fade show active" id="observer-redis">
+            <div class="tab-pane fade show active" id="observer">
                 <form>
                     {{range $ik,$iv := .redis_config.Values}}
                         <div class="row">
@@ -67,9 +67,9 @@
                     <button type="submit" class="btn btn-primary float-right">Save</button>
                 </form>
             </div>
-            <div class="tab-pane fade" id="advanced-redis">
+            <div class="tab-pane fade" id="advanced">
                 <div class="form-floating">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="min-height: 800px">{{ .file_content }}</textarea>
+                    <textarea class="form-control" id="code">{{ .file_content }}</textarea>
                     <label for="floatingTextarea2">redis.conf</label>
                 </div>
             </div>

@@ -26,17 +26,9 @@ func Main(context *gin.Context){
 
 // ConfigMysql Mysql 配置页
 func ConfigMysql(context *gin.Context) {
-	fileName := "H:\\mysql_simple.cnf"
-	i := go2parse.New(fileName)
-	log.Println(i)
-
-
-	fileContent := utils.ReadFile(fileName)
-	log.Println(fileContent)
-
+	// 页面及初始变量
 	context.HTML(http.StatusOK,"c_mysql.gohtml",gin.H{
-		"mysql_config":i,
-		"file_content":fileContent,
+		"current_state":"MySQL",
 	})
 }
 // ConfigRedis Redis 配置页
