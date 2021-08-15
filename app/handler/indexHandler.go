@@ -1,18 +1,14 @@
+// Package handler 页面请求相关 API Handler
 package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
-	"observer/app/utils"
-	"observer/app/utils/go2parse"
 )
 
-/*路径请求相关 Handler*/
-
-// Index 项目起始页
+// Index 项目起始页 TODO: 已经弃用，后期用作登录页面
 func Index(context *gin.Context) {
-	context.HTML(http.StatusOK,"index.gohtml",gin.H{
+	context.HTML(http.StatusOK,"main.gohtml",gin.H{
 		"title": "Observer，帮您更优雅的配置~",
 	})
 }
@@ -24,39 +20,10 @@ func Main(context *gin.Context){
 	})
 }
 
-// ConfigMysql Mysql 配置页
-func ConfigMysql(context *gin.Context) {
-	// 页面及初始变量
-	context.HTML(http.StatusOK,"c_mysql.gohtml",gin.H{
-		"current_state":"MySQL",
-	})
-}
-// ConfigRedis Redis 配置页
-func ConfigRedis(context *gin.Context) {
-	fileName := "H:\\redis.conf"
-	i := go2parse.New(fileName)
-	log.Println(i)
-
-	fileContent := utils.ReadFile(fileName)
-	log.Println(fileContent)
-
-	context.HTML(http.StatusOK,"c_redis.gohtml",gin.H{
-		"redis_config":i,
-		"file_content":fileContent,
-	})
-}
-
-// ConfigCrontab  Crontab 配置页
-func ConfigCrontab(context *gin.Context) {
-	//fileName := "H:\\crontab"
-	//i := go2parse.New(fileName)
-	//log.Println(i)
-	//
-	//fileContent := utils.ReadFile(fileName)
-	//log.Println(fileContent)
-
-	context.HTML(http.StatusOK,"c_crontab.gohtml",gin.H{
-		//"crontab_config":i,
-		//"file_content":fileContent,
+// ConfigurationPage 标准配置页面 (通过参数 "current_state",来判断当前配置状态)
+func ConfigurationPage(context *gin.Context) {
+	currentState := context.Query("cs")
+	context.HTML(http.StatusOK,"configuration.gohtml",gin.H{
+		"current_state": currentState,
 	})
 }

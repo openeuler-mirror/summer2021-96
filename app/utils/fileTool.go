@@ -1,3 +1,4 @@
+// Package utils fileTool 文件工具 处理文件相关操作
 package utils
 
 import (
@@ -6,9 +7,7 @@ import (
 	"os"
 )
 
-/**
- * 判断文件是否存在  存在返回 true 不存在返回false
- */
+//  checkFileIsExist 判断文件是否存在  存在返回 true 不存在返回false
 func checkFileIsExist(filename string) bool {
 	var exist = true
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
@@ -17,6 +16,7 @@ func checkFileIsExist(filename string) bool {
 	return exist
 }
 
+// ReadFile 读取文件
 func ReadFile(fileName string) string{
 	// 打开文件
 	fp, err := os.Open(fileName)

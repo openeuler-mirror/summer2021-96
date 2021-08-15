@@ -4,29 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>observer-main</title>
+    <title>observer-{{ .current_state }}</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/statics/assets/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
-
-
-
+    <link href="/statics/libs/bootstrap-5.1.0/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- CodeMirror -->
     <link rel=stylesheet href="/statics/libs/codemirror/doc/docs.css">
@@ -114,8 +95,6 @@
     {{ template "sidebars" }}
 
     <div class="content-div m-4">
-
-
         {{/*   导航条    */}}
         <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -135,22 +114,11 @@
         <div class="tab-content">
             <div class="tab-pane fade show active" id="observer">
                 <div class="submit-box">
-                    <button type="submit" class="btn btn-outline-secondary float-right">恢复</button>
-                    <button type="submit" class="btn btn-outline-primary float-right">写入并重启</button>
+                    <button type="submit" class="btn btn-outline-secondary float-right" onclick="observerConfRead()">恢复</button>
+                    <button type="submit" class="btn btn-outline-primary float-right" onclick="observerConfWrite()">写入并重启</button>
                 </div>
                 <div class="form-box">
                     <form id="config-form">
-{{/*                        {{range $sk,$sv := .mysql_config.Values}}*/}}
-{{/*                            <h4 class="text-black">{{$sk}} </h4>*/}}
-{{/*                            {{ range $ik,$iv := $sv }}*/}}
-{{/*                                <div class="row">*/}}
-{{/*                                    <label for="{{$iv}}" class="col-sm-6 col-form-label">{{$ik}}</label>*/}}
-{{/*                                    <div class="col-sm-6">*/}}
-{{/*                                        <input type="text" class="form-control" id="{{$iv}}" value="{{$iv}}">*/}}
-{{/*                                    </div>*/}}
-{{/*                                </div>*/}}
-{{/*                            {{end}}*/}}
-{{/*                        {{end}}*/}}
                     </form>
                 </div>
             </div>
@@ -171,10 +139,12 @@
 <script>
     //读取文件的内容
     $(function(){
+        refreshData()
+    });
+    function refreshData() {
         observerConfRead() // 获取解析后的配置集
         confRead(); // 读取配置文件
-    });
-
+    }
 
     /* Resolved 获取已经解析的结果 */
     function observerConfRead() {
@@ -186,7 +156,7 @@
                 // "configuration_file_path":""
             },
             success:function(result){
-                console.log('接口结果：')
+                console.log('observerConfRead：')
                 console.log(result)
                 if(result.success){
                     //    解析 JSON 数据
@@ -198,27 +168,97 @@
             }
         })
     }
+    /* Resolved 保存更新的解析数据 */
+    function observerConfWrite() {
+
+        let config_form = $('#config-form');
+        let objArray = config_form.serializeArray()
+        // console.log(getFormData(objArray))
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url:'/api/configuration_file/observer',
+            data: JSON.stringify(getFormData(objArray)),
+            success: function (result) {
+                console.log("observerConfWrite 接口结果：");
+                console.log(result);
+                if (result.success) {
+                    refreshData(); // 刷新数据
+                    alert("写入配置成功！");
+                }
+            },
+            error : function() {
+                alert("写入配置异常！");
+            }
+        });
+    }
+    //utility function
+    function getFormData(data) {
+        var unindexed_array = data;
+        var indexed_array = {};
+
+        $.map(unindexed_array, function(n, i) {
+            indexed_array[n['name']] = n['value'];
+        });
+        indexed_array["current_state"] = $("#current-state").html();
+
+        return indexed_array;
+    }
+
+
     /* 解析 JSON 数据到页面 */
     function parsingData(data){
-        console.log(data)
+
+        let config_form = $("#config-form");
+        config_form.empty(); // 添加前先清空
+
+        let current_state = $("#current-state").html();
+        if (current_state === "MySQL"){
+            showMySQLData(data,config_form);
+        }else if(current_state === "Redis"){
+            showRedisData(data,config_form);
+        }
+
+
+    }
+    function showMySQLData(data,config_form) {
         for (let section in data){
             if (data.hasOwnProperty(section)){
-                console.log(section)
+                // console.log(section)
                 let h4Dom = $("<h4 class='text-black'></h4>").text("[" + section + "]"); // 构建DOM
-                $("#config-form").append(h4Dom)
+                config_form.append(h4Dom)
                 for (let item in data[section]){
-                    console.log(item + " : " + data[section][item]);
+                    // console.log(item + " : " + data[section][item]);
                     let outDivDom = $("<div class='row'></div>");
 
                     let labelDom = $("<label class='col-sm-6 col-form-label'></label>").text(item);
 
                     let inputDom = $("<input type='text' class='form-control'>").val(data[section][item]);
+                    inputDom.attr('name',item);
                     let inDivDom = $("<div class='col-sm-6'></div>").append(inputDom);
 
                     outDivDom.append(labelDom,inDivDom);
-
-                    $("#config-form").append(outDivDom);
+                    config_form.append(outDivDom);
                 }
+            }
+        }
+    }
+    function showRedisData(data,config_form) {
+        for (let item in data){
+            if (data.hasOwnProperty(item)){
+                // console.log(item + " : " + data[section][item]);
+                let outDivDom = $("<div class='row'></div>");
+
+                let labelDom = $("<label class='col-sm-6 col-form-label'></label>").text(item);
+
+                let inputDom = $("<input type='text' class='form-control'>").val(data[item]);
+                inputDom.attr('name',item);
+                let inDivDom = $("<div class='col-sm-6'></div>").append(inputDom);
+
+                outDivDom.append(labelDom,inDivDom);
+                config_form.append(outDivDom);
             }
         }
     }
@@ -250,13 +290,13 @@
             url:'/api/configuration_file',
             data:{
                 "current_state":$("#current-state").html(),// 当前状态
-                "configuration_file_path":$("#txtname").html(), // 写入的配置文件位置
+                // "configuration_file_path":$("#txtname").html(), // 写入的配置文件位置
                 "updated_content":$("#code").val() // 写入的内容
             },
             success:function(result){
                 if(result.success){
                     alert("写入成功");
-                    confRead(); // 写入成功重新请求一次数据
+                    refreshData(); // 写入成功重新请求一次数据
                 }else{
                     alert("写入内容失败");
                 }
