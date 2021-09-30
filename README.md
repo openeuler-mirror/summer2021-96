@@ -46,7 +46,7 @@
 observer
 ├─.idea
 ├─app
-│  ├─config               # 项目配置
+│  ├─conf               # 项目配置
 │  ├─handler              # 处理器
 │  ├─model                
 │  ├─route                # 路由

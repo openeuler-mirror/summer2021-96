@@ -1,6 +1,8 @@
 package main
 
-import "observer/app/route"
+import (
+	"observer/app/route"
+)
 
 // 程序入口
 func main() {

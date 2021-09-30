@@ -1,6 +1,7 @@
 package go2parse
 
 import (
+	"log"
 	"path"
 	"reflect"
 )
@@ -11,21 +12,34 @@ type Config struct {
 
 func New(fileName string) * Config {
 
-	switch path.Ext(fileName) {
-	case ".conf":
+	// 通过 完整文件名来判断（文件名+扩展名）
+	fullName := path.Base(fileName)
+	log.Println(fullName)
+
+	// 通过扩展名来判断
+	//switch path.Ext(fileName) {
+
+	switch path.Base(fileName) {
+	case "redis.conf":
 		return NewRedisConf(fileName)
-	case ".cnf":
+	case "mysqld.cnf":
 		return NewCnf(fileName)
+	case "nginx.conf":
+		return NewNginxConf(fileName)
+	case "nginx_simple.conf":
+		return NewNginxConf(fileName)
+	case "crontab":
+		return NewCrontabConf(fileName)
 	case ".ini":
 		return NewIni(fileName)
-	case ".json":
+	case "conf.json":
 		return NewJson(fileName, nil)
 	case ".xml":
 		return NewXml(fileName, nil)
 	case ".yaml":
 		return NewYaml(fileName)
 	default:
-		panic("config file error")
+		panic("conf file error")
 	}
 
 	return nil

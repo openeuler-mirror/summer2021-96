@@ -44,6 +44,11 @@ func SetupRouter() *gin.Engine {
 		apiGroup.POST("/configuration_file",handler.ConfigurationFileWrite)
 		apiGroup.GET("/configuration_file/observer",handler.ConfigurationReadByObserver)
 		apiGroup.POST("/configuration_file/observer",handler.ConfigurationWriteByObserver)
+
+		testApiGroup := apiGroup.Group("/test")
+		{
+			testApiGroup.GET("/default_path")
+	    }
 	}
 
 	return router

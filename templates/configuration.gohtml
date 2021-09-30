@@ -122,7 +122,7 @@
                     </form>
                 </div>
             </div>
-            <div class="tab-pane fade" id="advanced">
+            <div class="tab-pane fade h-100" id="advanced">
                 <div class="submit-box">
                     <button type="submit" class="btn btn-outline-secondary float-right" onclick="confRead()">恢复</button>
                     <button type="submit" class="btn btn-outline-primary float-right" onclick="confWrite()">写入并重启</button>
@@ -140,6 +140,10 @@
     //读取文件的内容
     $(function(){
         refreshData()
+
+        // code 高度计算
+        let ah = $("#advanced").height()
+        $("#code").height(ah-222)
     });
     function refreshData() {
         observerConfRead() // 获取解析后的配置集
@@ -161,7 +165,7 @@
                 if(result.success){
                     //    解析 JSON 数据
                     // console.log(result.config.Values)
-                    parsingData(result.config.Values);
+                    parsingData(result.conf.Values);
                 }else{
                     alert("读取内容失败");
                 }

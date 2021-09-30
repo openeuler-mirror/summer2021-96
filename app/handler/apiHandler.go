@@ -13,9 +13,11 @@ import (
 // ConfFilePath 配置文件路径 //TODO 后期通过专门的配置文件来指定
 var (
 	ConfFilePath = map[string]string{
-		"MySQL":"H://my.cnf",
-		"Redis":"H://redis.conf",
-		"Crontab": "H://my.cnf",  // TODO: 此处为测试，要修改为Crontab配置文件
+		"MySQL":"/etc/mysql/mysql.conf.d/mysqld.cnf",
+		"Redis":"/etc/redis/redis.conf",
+		"Crontab": "/etc/crontab",
+		"Nginx": "/etc/nginx/nginx.conf",
+		"iptables": "/etc/sysconfig/iptables",
 	}
 )
 
@@ -34,7 +36,7 @@ func ConfigurationReadByObserver(context *gin.Context) {
 	// 页面及初始变量
 	context.JSON(http.StatusOK,gin.H{
 		"current_state":currentState,
-		"config":i,
+		"conf":i,
 		"success": true,
 	})
 }

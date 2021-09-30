@@ -1,0 +1,5 @@
+default-config-file-path:
+  MySQL: "/etc/mysql/my.cnf"
+  Redis: "/etc/redis/redis.conf"
+  Crontab: "/etc/crontab"
+  Nginx: "/etc/nginx/nginx.conf"

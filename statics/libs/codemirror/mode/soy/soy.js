@@ -594,7 +594,7 @@
               }
             }
           } else if (endTag) {
-            // Assume all tags with a closing tag are defined in the config.
+            // Assume all tags with a closing tag are defined in the conf.
             tagError = true;
           }
           return (tagError ? "error " : "") + "keyword";
